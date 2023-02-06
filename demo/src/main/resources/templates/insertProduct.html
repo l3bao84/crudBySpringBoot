@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Thêm sản phẩm mới</title>
+    <style>
+        .content {
+            width: 500px;
+            height: 100%;
+            margin: 0 auto;
+        }
+        .error{
+            color: red;
+        }
+        .go-back{
+            padding: 40px 10px 0 10px;
+        }
+        .btn > a{
+            color: white;
+        }
+        .btn > a:hover{
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="go-back">
+        <button type="button" class="btn btn-dark">
+            <a th:href="@{'/main'}">Trở lại trang chủ</a>
+        </button>
+    </div>
+    <form class="content" method="POST" 
+        th:action="@{'/products/insertProduct'}"
+        th:object="${product}">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Tên sản phẩm</label>
+          <input th:field="*{productName}" type="text" class="form-control" id="exampleInputEmail1" placeholder="Nhập tên sản phẩm">
+          <p class="error" th:errors="*{productName}"></p>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Giá bán (VNĐ)</label>
+          <input th:field="*{productPrice}" type="number" class="form-control" id="exampleInputPassword1">
+          <p class="error" th:errors="*{productPrice}"></p>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">Số lượng</label>
+            <input th:field="*{productNumbers}" type="number" class="form-control" id="exampleInputPassword1">
+            <p class="error" th:errors="*{productNumbers}"></p>
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlSelect1">Danh mục</label>
+            <select th:field="*{categoryID}" class="form-control" id="exampleFormControlSelect1">
+                <option th:each="category:${categories}" th:value="${category.getCategoryID()}" th:text="${category.getCategoryName()}"></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">Đường dẫn ảnh</label>
+            <input th:field="*{productImg}" type="text" class="form-control" id="exampleInputPassword1">
+            <p class="error" th:errors="*{productImg}"></p>
+        </div>
+        <p class="error" th:text="${error}"></p>
+        <input type="submit" class="btn btn-primary" value="Thêm"></input>
+      </form>
+</body>
+</html>

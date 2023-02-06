@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Trang chủ</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+        .main_Title{
+            padding-top: 40px;
+            text-align: center;
+            width: 100%;
+            color: #ff7337;
+        }
+        .content{
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            padding: 80px 300px 0 300px;
+            justify-content: space-around;
+            height: 500px;
+        }
+        .category_item{
+            width: 25%;
+            /* height: 50%; */
+            text-align: center;
+            text-decoration: none;
+            border: 1px solid gainsboro;
+        }
+        .category_item:hover{
+            text-decoration: none;
+        }
+        .category_item_img{
+            text-align: center;
+        }
+        .category_item_img > img{
+            padding-top: 4px;
+            width: 80%;
+            height: 80%;
+        }
+        .category_item_name{
+            text-align: center;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div class="main_Title"><h1>DANH MỤC SẢN PHẨM</h1></div>
+    <div class="content">
+        <th:block th:each="category : ${categories}">
+            <a th:href="@{'/products/getProductByCategoryID/' + ${category.getCategoryID()}}" class="category_item">
+                <div>
+                    <div class="category_item_img"><img th:src="@{${category.getCategoryImg()}}" alt=""></div>
+                    <div class="category_item_name" th:text="${category.getCategoryName()}"></div>
+                </div>
+            </a>
+        </th:block>
+    </div>
+</body>
+</html>

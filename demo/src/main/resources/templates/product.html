@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Sản phẩm</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+        .header{
+            padding: 40px 10px 0 10px;
+            width: 100%;
+            display: flex;
+        }
+        .content {
+            width: 100%;
+            height: 100%;
+            padding: 60px 10px 0 10px;
+        }
+        table{
+            text-align: center;
+            align-items: center;
+        }
+        .img_pro{
+            width: 90px;
+            height: 90px;
+        }
+        .img_pro > a > img{
+            width: 100%;
+            height: 100%;
+        }
+        .style_btn {
+            color: white;
+        }
+        .style_btn:hover{
+            text-decoration: none;
+            color: white;
+        }
+        .btns{
+            display: flex;
+            justify-content: space-around;
+        }
+        .btn > a{
+            color: white;
+        }
+        .btn > a:hover{
+            text-decoration: none;
+        }
+        .go-back{
+            width: calc(100%/3);
+        }
+        .title{
+            width: calc(100%/3);
+            color: #ff7337;
+            text-align: center;
+        }
+    </style>
+</head>
+<body th:onload="formatPrice()">
+    <div class="header">
+        <div class="go-back">
+            <button type="button" class="btn btn-dark">
+                <a th:href="@{'/main'}">Trở lại trang chủ</a>
+            </button>
+        </div>
+        <div class="title">
+            <h1>DANH SÁCH SẢN PHẨM</h1>
+        </div>
+    </div>
+    <div class="content">
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Tên</th>
+                  <th scope="col">Giá bán</th>
+                  <th scope="col">Số lượng còn</th>
+                  <th scope="col">
+                    <button type="button" class="btn btn-success"><a th:href="@{'/products/insertProduct'}">+ Thêm sản phẩm</a></button>
+                  </th>
+                </tr>
+            </thead>
+            <th:block th:each="product : ${products}">
+                <tbody>
+                    <tr>
+                      <th scope="row">
+                        <div class="img_pro">
+                            <a th:href="@{'/products/detailProduct/' + ${product.getProductID()}}"><img th:src="@{${product.getProductImg()}}" alt=""></a>
+                        </div>
+                      </th>
+                      <td style="width: 600px;" th:text="${product.getProductName()}"></td>
+                      <td class="price" th:text="${product.getProductPrice()}"></td>
+                      <td th:text="${product.getProductNumbers()}"></td>
+                      <td>
+                        <div class="btns">
+                            <button type="button" class="btn btn-secondary"><a class="style_btn" th:href="@{'/products/changeInforProduct/' + ${product.getProductID()}}">Sửa</a></button>
+                            <form th:action="@{'/products/deleteProduct/' + ${product.getProductID()}}"  
+                                method="POST"
+                                th:onsubmit="return confirm('Bạn có chắc chắn muống xóa sản phẩm này không?') ? true : false">
+                                <input type="submit" class="btn btn-danger style_btn" th:value="Xóa">
+                            </form>
+                        </div>
+                      </td>
+                    </tr>
+                    <script>
+                        function formatPrice() {
+                            const VND = new Intl.NumberFormat('vi-VN', {
+                            style: 'currency',
+                            currency: 'VND',
+                            });
+                            
+                            var price = document.querySelector('.price').textContent
+                            console.log(VND.format(price))
+                            document.querySelector('.price').innerHTML = VND.format(price)
+                        }
+                    </script>
+                </tbody>    
+            </th:block>
+        </table>
+    </div>
+</body>
+</html>

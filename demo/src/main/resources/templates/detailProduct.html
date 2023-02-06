@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Chi tiết sản phẩm</title>
+    <style>
+        body{
+            background-color: #f5f5f5;
+        }
+        .error{
+            color: red;
+        }
+        .go-back{
+            padding: 40px 10px 0 10px;
+        }
+        .btn > a{
+            color: white;
+        }
+        .btn > a:hover{
+            text-decoration: none;
+        }
+        .content{
+            display: flex;
+            width: 100%;
+            padding: 40px 80px 0;
+        }
+        .product-img{
+            width: 40%;
+            padding: 10px;
+            background-color: #FFFFFF;
+        }
+        .product-img > a > img {
+            width: 100%;
+            height: 100%;
+        }
+        .product-infor{
+            width: 60%;
+            padding: 10px;
+            background-color: #FFFFFF;
+            position: relative;
+        }
+        .product-infor_name{
+            font-size: 20px;
+        }
+        .product-infor_price{
+            padding: 80px 0 30px 0;
+            color: #F14320;
+        }
+        .unit{
+            text-decoration: underline;
+            font-size: 20px;
+            padding: 4px 2px 0 0;
+        }
+        .price{
+            font-size: 30px;
+        }
+        .product-infor_discount,
+        .product-infor_transport,
+        .product-infor_category,
+        .product-infor_amount {
+            padding: 10px 0 10px;
+            color: #757575;
+        }
+        .add-cart {
+            padding: 10px 0 10px;
+        }
+        .product-infor_buy {
+            display: flex;
+            align-items: center;
+            position: absolute;
+            bottom: 0;
+        }
+        .add-cart > input{
+            padding: 10px 30px;
+            color: #F14320;
+            background-color: rgba(255,87,34,0.1);
+            border: 1px solid #F14320;
+            border-radius: 2px;
+        }
+        .add-cart > input:hover {
+            background: rgba(255,197,178,.181);
+        }
+        .buyNow > input{
+            padding: 10px 30px;
+            color: #fff;
+            background-color: #ee4d2d;
+            border: 1px solid #ee4d2d;
+            border-radius: 2px;
+            margin-left: 20px;
+        }
+        .buyNow > input:hover {
+            background: #f05d40;
+        }
+        .product-infor_amount {
+            position: absolute;
+            bottom: 70px;
+            display: flex;
+        }
+        .change-amount{
+            padding-left: 50px;
+            display: flex;
+        }
+        .amountNow {
+            padding-left: 20px;
+            color: #757575;
+        }
+        .decrease,
+        .increase {
+            width: 32px;
+            height: 32px;
+            border: 1px solid #757575;
+            font-size: 18px;
+            color: #757575;
+            background-color: #FFFFFF;
+        }
+        .decrease {
+            border-right: none;
+        }
+        .increase {
+            border-left: none;
+        }
+        .text-amount{
+            height: 32px;
+            border: 1px solid #757575;
+            width: 50px;
+            text-align: center;
+            line-height: 32px;
+        }
+    </style>
+</head>
+<body th:onload="formatPrice()">
+    <div class="go-back">
+        <button type="button" class="btn btn-dark">
+            <a th:href="@{'/main'}">Trở lại trang chủ</a>
+        </button>
+    </div>
+    <div class="content">
+        <div class="product-img">
+            <a href=""><img th:src="@{${product.getProductImg()}}" alt=""></a>
+        </div>
+        <div class="product-infor">
+            <div class="product-infor_name" th:text="${product.getProductName()}"></div>
+            <div class="product-infor_eval"></div>
+            <div class="product-infor_price">
+                <div class="price" th:text="${product.getProductPrice()}"></div>
+            </div>
+            <div class="product-infor_discount" th:text="'Mã giảm giá'"></div>
+            <div class="product-infor_transport" th:text="'Vận chuyển'"></div>
+            <div class="product-infor_category" th:text="'Loại'"></div>
+            <div class="product-infor_amount">
+                <div class="amount" th:text="'Số lượng'"></div>
+                <div class="change-amount">
+                    <button th:onclick="decrease()" class="decrease" th:text="'-'"></button>
+                    <input type="text" class="text-amount" th:value="1"></input>
+                    <button th:onclick="increase()" class="increase" th:text="'+'"></button>
+                </div>
+                <div class="amountNow" th:text="${product.getProductNumbers() + ' sản phẩm có sẵn'}"></div>
+            </div>
+            <div class="product-infor_buy">
+                <div class="add-cart">
+                    <input type="button" value="Thêm vào giỏ hàng">
+                </div>
+                <div class="buyNow">
+                    <input type="button" value="Mua ngay">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function increase() {
+            var numberNow = document.getElementsByClassName("text-amount")[0].value;
+            numberNow++
+            document.querySelector('.text-amount').value = numberNow++;
+        }
+
+        function decrease() {
+            var numberNow = document.getElementsByClassName("text-amount")[0].value;
+            if(numberNow > 1) {
+                numberNow--
+                document.querySelector('.text-amount').value = numberNow--;
+            }
+        }
+
+        function formatPrice() {
+            const VND = new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+            });
+            
+            var price = document.querySelector('.price').textContent
+            console.log(VND.format(price))
+            document.querySelector('.price').innerHTML = VND.format(price)
+        }
+
+    </script>
+</body>
+</html>
