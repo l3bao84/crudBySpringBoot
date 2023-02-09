@@ -61,6 +61,15 @@
             <input th:field="*{productImg}" type="text" class="form-control" id="exampleInputPassword1">
             <p class="error" th:errors="*{productImg}"></p>
         </div>
+        <!-- <form method="POST" 
+              th:action="@{'/images/upload'}"
+              enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="exampleFormControlFile1">Chọn ảnh</label>
+                <input th:field="*{productImg}" type="file" class="form-control-file" id="exampleFormControlFile1">
+                <p class="error" th:errors="*{productImg}"></p>
+            </div>
+        </form> -->
         <p class="error" th:text="${error}"></p>
         <input type="submit" class="btn btn-primary" value="Thêm"></input>
       </form>

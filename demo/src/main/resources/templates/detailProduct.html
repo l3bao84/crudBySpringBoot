@@ -15,6 +15,8 @@
         }
         .go-back{
             padding: 40px 10px 0 10px;
+            display: flex;
+            width: 100%;
         }
         .btn > a{
             color: white;
@@ -129,13 +131,53 @@
             text-align: center;
             line-height: 32px;
         }
+        .back-to-homepage{
+            width: 30%;
+        }
+        .btns{
+            width: 30%;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .title{
+            width: 40%;
+            text-align: center;
+            color: #ff7337;
+            align-self: auto;
+        }
+        .btn-add {
+            padding-right: 10px;
+        }
+        .btn-fix {
+            padding-right: 10px;
+        }
     </style>
 </head>
 <body th:onload="formatPrice()">
     <div class="go-back">
-        <button type="button" class="btn btn-dark">
-            <a th:href="@{'/main'}">Trở lại trang chủ</a>
-        </button>
+        <div class="back-to-homepage">
+            <button type="button" class="btn btn-dark">
+                <a th:href="@{'/main'}">Trở lại trang chủ</a>
+            </button>
+        </div>
+        <div class="title">
+            <h1>CHI TIẾT SẢN PHẨM</h1>
+        </div>
+        <div class="btns">
+            <div class="btn-add">
+                <button type="button" class="btn btn-success"><a th:href="@{'/products/insertProduct'}">+ Thêm sản phẩm</a></button>
+            </div>
+            <div class="btn-fix">
+                <button type="button" class="btn btn-secondary"><a class="style_btn" th:href="@{'/products/changeInforProduct/' + ${product.getProductID()}}">Sửa</a></button>
+            </div>
+            <div class="btn-del">
+                <form th:action="@{'/products/deleteProduct/' + ${product.getProductID()}}"  
+                method="POST"
+                th:onsubmit="return confirm('Bạn có chắc chắn muống xóa sản phẩm này không?') ? true : false">
+                <input type="submit" class="btn btn-danger style_btn" th:value="Xóa">
+                </form>
+            </div>
+        </div>
     </div>
     <div class="content">
         <div class="product-img">
