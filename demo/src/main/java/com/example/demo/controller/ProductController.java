@@ -27,8 +27,14 @@ public class ProductController {
 
     @RequestMapping(value = "/getProductByCategoryID/{categoryID}", method = RequestMethod.GET)
     public String getProductList(ModelMap modelMap, @PathVariable String categoryID) {
+        boolean check = false;
         Iterable<Product> products = productRepository.findByCategoryID(categoryID);
-        modelMap.addAttribute("products", products);
+        if(products.iterator().hasNext()) {
+            check = true;
+            modelMap.addAttribute("products", products);
+            modelMap.addAttribute("check", check);
+        }
+        //modelMap.addAttribute("products", products);
         return "product";
     }
 
